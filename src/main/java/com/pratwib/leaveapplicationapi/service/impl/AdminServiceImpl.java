@@ -34,6 +34,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin getEntityByUserId(String userId) {
+        return adminRepository.findByUser_IdAndIsActive(userId, true).orElseThrow(() ->
+                new NotFoundException("Admin not found"));
+    }
+
+    @Override
     public AdminResponse getById(String id) {
         return toAdminResponse(getEntityById(id));
     }

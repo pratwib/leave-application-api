@@ -1,21 +1,22 @@
 package com.pratwib.leaveapplicationapi.service;
 
-import com.pratwib.leaveapplicationapi.model.entity.Admin;
 import com.pratwib.leaveapplicationapi.model.entity.Employee;
-import com.pratwib.leaveapplicationapi.model.request.AdminRequest;
-import com.pratwib.leaveapplicationapi.model.response.AdminResponse;
+import com.pratwib.leaveapplicationapi.model.request.EmployeeRequest;
+import com.pratwib.leaveapplicationapi.model.response.EmployeeResponse;
 import org.springframework.data.domain.Page;
 
 public interface EmployeeService {
     Employee create(Employee employee);
 
-    Admin getEntityById(String id);
+    Employee getEntityById(String id);
 
-    AdminResponse getById(String id);
+    Employee getEntityByUserId(String userId);
 
-    Page<AdminResponse> getAll(Integer page, Integer size);
+    EmployeeResponse getById(String id);
 
-    AdminResponse updateById(String id, AdminRequest adminRequest);
+    Page<EmployeeResponse> getAll(Integer page, Integer size);
+
+    EmployeeResponse updateById(String id, EmployeeRequest employeeRequest);
 
     void softDeleteById(String id);
 }

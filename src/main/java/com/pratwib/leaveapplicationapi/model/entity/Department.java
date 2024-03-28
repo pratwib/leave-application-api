@@ -1,7 +1,6 @@
 package com.pratwib.leaveapplicationapi.model.entity;
 
 import com.pratwib.leaveapplicationapi.constant.DbPath;
-import com.pratwib.leaveapplicationapi.constant.EDepartment;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,9 +18,8 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "department", nullable = false, unique = true)
-    @Enumerated(EnumType.STRING)
-    private EDepartment name;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
     private List<Employee> employees;

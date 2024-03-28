@@ -21,7 +21,6 @@ public class Employee {
     private String id;
 
     @Column(name = "nip", nullable = false, unique = true)
-    @Length(max = 10, message = "NIP must not exceed 10 characters")
     private String nip;
 
     @Column(name = "name", nullable = false)

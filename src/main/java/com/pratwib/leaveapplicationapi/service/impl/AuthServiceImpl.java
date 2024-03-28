@@ -36,11 +36,11 @@ public class AuthServiceImpl implements AuthService {
             Role role;
             if (authRequest.getNip() == null) {
                 role = Role.builder()
-                        .name(ERole.ADMIN)
+                        .name(ERole.ROLE_ADMIN)
                         .build();
             } else {
                 role = Role.builder()
-                        .name(ERole.EMPLOYEE)
+                        .name(ERole.ROLE_EMPLOYEE)
                         .build();
             }
             roleService.getOrCreate(role);

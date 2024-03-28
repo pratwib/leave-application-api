@@ -10,6 +10,9 @@ public interface AdminService {
 
     Admin getEntityById(String id);
 
+    Admin getEntityByUserId(String userId);
+
+
     AdminResponse getById(String id);
 
     Page<AdminResponse> getAll(Integer page, Integer size);

@@ -1,5 +1,5 @@
 package com.pratwib.leaveapplicationapi.constant;
 
 public enum ERole {
-    ADMIN, EMPLOYEE
+    ROLE_ADMIN, ROLE_EMPLOYEE
 }

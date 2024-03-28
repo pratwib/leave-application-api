@@ -20,5 +20,6 @@ public class AuthRequest {
     private String name;
     private String phoneNumber;
     private String email;
+    @Length(max = 10, message = "NIP must not exceed 10 characters")
     private String nip;
 }

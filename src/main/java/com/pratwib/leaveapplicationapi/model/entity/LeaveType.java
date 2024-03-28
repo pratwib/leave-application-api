@@ -1,7 +1,6 @@
 package com.pratwib.leaveapplicationapi.model.entity;
 
 import com.pratwib.leaveapplicationapi.constant.DbPath;
-import com.pratwib.leaveapplicationapi.constant.EDepartment;
 import com.pratwib.leaveapplicationapi.constant.ELeaveType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +19,7 @@ public class LeaveType {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "leave_type", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private ELeaveType name;
 

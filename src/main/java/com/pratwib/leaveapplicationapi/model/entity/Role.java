@@ -19,7 +19,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "role", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private ERole name;
 
