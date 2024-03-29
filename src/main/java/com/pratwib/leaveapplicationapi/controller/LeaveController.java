@@ -7,7 +7,6 @@ import com.pratwib.leaveapplicationapi.model.response.LeaveResponse;
 import com.pratwib.leaveapplicationapi.service.LeaveService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,18 +49,18 @@ public class LeaveController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getAllLeaves(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
+    public ResponseEntity<?> getLeaves(
+            @RequestParam(required = false) String employeeId,
+            @RequestParam(required = false) String leaveType,
+            @RequestParam(required = false) String approvalStatus
     ) {
-        Page<LeaveResponse> leaveResponses = leaveService.getAll(page, size);
+        List<LeaveResponse> leaveResponses = leaveService.getAll(employeeId, leaveType, approvalStatus);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonResponse.<List<LeaveResponse>>builder()
                         .statusCode(HttpStatus.OK.value())
-                        .message("Successfully retrieved all leaves")
-                        .data(leaveResponses.getContent())
-                        .pagingResponse(toPagingResponse(page, size, leaveResponses))
+                        .message("Successfully retrieved leaves data")
+                        .data(leaveResponses)
                         .build());
     }
 
@@ -89,14 +88,5 @@ public class LeaveController {
                         .message("Successfully rejected leave data")
                         .data(leaveResponse)
                         .build());
-    }
-
-    private static PagingResponse toPagingResponse(Integer page, Integer size, Page<LeaveResponse> leaveResponses) {
-        return PagingResponse.builder()
-                .currentPage(page)
-                .totalPages(leaveResponses.getTotalPages())
-                .size(size)
-                .totalItems(leaveResponses.getTotalElements())
-                .build();
     }
 }

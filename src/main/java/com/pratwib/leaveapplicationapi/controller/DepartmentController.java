@@ -4,11 +4,9 @@ import com.pratwib.leaveapplicationapi.constant.AppPath;
 import com.pratwib.leaveapplicationapi.model.request.DepartmentRequest;
 import com.pratwib.leaveapplicationapi.model.response.CommonResponse;
 import com.pratwib.leaveapplicationapi.model.response.DepartmentResponse;
-import com.pratwib.leaveapplicationapi.model.response.PagingResponse;
 import com.pratwib.leaveapplicationapi.service.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,18 +49,14 @@ public class DepartmentController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getAllDepartments(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        Page<DepartmentResponse> departmentResponses = departmentService.getAll(page, size);
+    public ResponseEntity<?> getAllDepartments() {
+        List<DepartmentResponse> departmentResponses = departmentService.getAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonResponse.<List<DepartmentResponse>>builder()
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully retrieved all departments")
-                        .data(departmentResponses.getContent())
-                        .pagingResponse(toPagingResponse(page, size, departmentResponses))
+                        .data(departmentResponses)
                         .build());
     }
 
@@ -89,14 +83,5 @@ public class DepartmentController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully soft deleted department")
                         .build());
-    }
-
-    private static PagingResponse toPagingResponse(Integer page, Integer size, Page<DepartmentResponse> departmentResponses) {
-        return PagingResponse.builder()
-                .currentPage(page)
-                .totalPages(departmentResponses.getTotalPages())
-                .size(size)
-                .totalItems(departmentResponses.getTotalElements())
-                .build();
     }
 }

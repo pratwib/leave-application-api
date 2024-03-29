@@ -1,6 +1,7 @@
 package com.pratwib.leaveapplicationapi.service.impl;
 
 import com.pratwib.leaveapplicationapi.constant.ApprovalStatus;
+import com.pratwib.leaveapplicationapi.constant.ELeaveType;
 import com.pratwib.leaveapplicationapi.exception.NotFoundException;
 import com.pratwib.leaveapplicationapi.exception.NotInPendingStatusException;
 import com.pratwib.leaveapplicationapi.model.entity.*;
@@ -13,15 +14,13 @@ import com.pratwib.leaveapplicationapi.service.LeaveService;
 import com.pratwib.leaveapplicationapi.service.LeaveTypeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -72,11 +71,18 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public Page<LeaveResponse> getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Leave> leaves = leaveRepository.findAll(pageable);
+    public List<LeaveResponse> getAll(String employeeId, String leaveType, String approvalStatus) {
+        ELeaveType searchedLeaveType = leaveType != null ? ELeaveType.valueOf(leaveType.toUpperCase()) : null;
+        ApprovalStatus searchedApprovalStatus = approvalStatus != null ? ApprovalStatus.valueOf(approvalStatus.toUpperCase()) : null;
 
-        return leaves.map(LeaveServiceImpl::toLeaveResponse);
+        List<Leave> leaves;
+        if (employeeId == null && leaveType == null && approvalStatus == null) {
+            leaves = leaveRepository.findAll();
+        } else {
+            leaves = leaveRepository.findAllByEmployee_IdOrLeaveType_NameOrApprovalStatus(employeeId, searchedLeaveType, searchedApprovalStatus);
+        }
+
+        return leaves.stream().map(LeaveServiceImpl::toLeaveResponse).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)

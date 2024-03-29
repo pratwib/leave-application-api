@@ -8,10 +8,9 @@ import com.pratwib.leaveapplicationapi.repository.LeaveTypeRepository;
 import com.pratwib.leaveapplicationapi.service.LeaveTypeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +41,10 @@ public class LeaveTypeServiceImpl implements LeaveTypeService {
     }
 
     @Override
-    public Page<LeaveTypeResponse> getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<LeaveType> leaveTypes = leaveTypeRepository.findAllByIsActive(true, pageable);
+    public List<LeaveTypeResponse> getAll() {
+        List<LeaveType> leaveTypes = leaveTypeRepository.findAllByIsActive(true);
 
-        return leaveTypes.map(LeaveTypeServiceImpl::toLeaveTypeResponse);
+        return leaveTypes.stream().map(LeaveTypeServiceImpl::toLeaveTypeResponse).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)

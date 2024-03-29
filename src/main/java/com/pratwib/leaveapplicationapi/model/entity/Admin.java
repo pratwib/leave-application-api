@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = DbPath.ADMIN_SCHEMA)
 @Builder(toBuilder = true)

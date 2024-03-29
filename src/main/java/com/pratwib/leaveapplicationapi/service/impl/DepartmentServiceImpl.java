@@ -2,19 +2,15 @@ package com.pratwib.leaveapplicationapi.service.impl;
 
 import com.pratwib.leaveapplicationapi.exception.NotFoundException;
 import com.pratwib.leaveapplicationapi.model.entity.Department;
-import com.pratwib.leaveapplicationapi.model.entity.Employee;
 import com.pratwib.leaveapplicationapi.model.request.DepartmentRequest;
 import com.pratwib.leaveapplicationapi.model.response.DepartmentResponse;
 import com.pratwib.leaveapplicationapi.repository.DepartmentRepository;
 import com.pratwib.leaveapplicationapi.service.DepartmentService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +41,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Page<DepartmentResponse> getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Department> departments = departmentRepository.findAllByIsActive(true, pageable);
+    public List<DepartmentResponse> getAll() {
+        List<Department> departments = departmentRepository.findAllByIsActive(true);
 
-        return departments.map(DepartmentServiceImpl::toDepartmentResponse);
+        return departments.stream().map(DepartmentServiceImpl::toDepartmentResponse).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)

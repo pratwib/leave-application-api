@@ -3,7 +3,8 @@ package com.pratwib.leaveapplicationapi.service;
 import com.pratwib.leaveapplicationapi.model.entity.Employee;
 import com.pratwib.leaveapplicationapi.model.request.EmployeeRequest;
 import com.pratwib.leaveapplicationapi.model.response.EmployeeResponse;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface EmployeeService {
     Employee create(Employee employee);
@@ -14,7 +15,7 @@ public interface EmployeeService {
 
     EmployeeResponse getById(String id);
 
-    Page<EmployeeResponse> getAll(Integer page, Integer size);
+    List<EmployeeResponse> getAll(String departmentName);
 
     EmployeeResponse updateById(String id, EmployeeRequest employeeRequest);
 

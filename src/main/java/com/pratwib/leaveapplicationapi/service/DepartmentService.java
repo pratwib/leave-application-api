@@ -3,7 +3,8 @@ package com.pratwib.leaveapplicationapi.service;
 import com.pratwib.leaveapplicationapi.model.entity.Department;
 import com.pratwib.leaveapplicationapi.model.request.DepartmentRequest;
 import com.pratwib.leaveapplicationapi.model.response.DepartmentResponse;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface DepartmentService {
     DepartmentResponse create(DepartmentRequest departmentRequest);
@@ -12,7 +13,7 @@ public interface DepartmentService {
 
     DepartmentResponse getById(String id);
 
-    Page<DepartmentResponse> getAll(Integer page, Integer size);
+    List<DepartmentResponse> getAll();
 
     DepartmentResponse updateById(String id, DepartmentRequest departmentRequest);
 

@@ -4,7 +4,6 @@ import com.pratwib.leaveapplicationapi.constant.DbPath;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 

@@ -10,10 +10,9 @@ import com.pratwib.leaveapplicationapi.service.AdminService;
 import com.pratwib.leaveapplicationapi.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,11 +44,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Page<AdminResponse> getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Admin> admins = adminRepository.findAllByIsActive(true, pageable);
+    public List<AdminResponse> getAll() {
+        List<Admin> admins = adminRepository.findAllByIsActive(true);
 
-        return admins.map(AdminServiceImpl::toAdminResponse);
+        return admins.stream().map(AdminServiceImpl::toAdminResponse).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)

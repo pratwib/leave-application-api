@@ -4,11 +4,9 @@ import com.pratwib.leaveapplicationapi.constant.AppPath;
 import com.pratwib.leaveapplicationapi.model.request.LeaveTypeRequest;
 import com.pratwib.leaveapplicationapi.model.response.CommonResponse;
 import com.pratwib.leaveapplicationapi.model.response.LeaveTypeResponse;
-import com.pratwib.leaveapplicationapi.model.response.PagingResponse;
 import com.pratwib.leaveapplicationapi.service.LeaveTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,18 +48,14 @@ public class LeaveTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllLeaveTypes(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        Page<LeaveTypeResponse> leaveTypeResponses = leaveTypeService.getAll(page, size);
+    public ResponseEntity<?> getAllLeaveTypes() {
+        List<LeaveTypeResponse> leaveTypeResponses = leaveTypeService.getAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonResponse.<List<LeaveTypeResponse>>builder()
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully retrieved all leaveTypes")
-                        .data(leaveTypeResponses.getContent())
-                        .pagingResponse(toPagingResponse(page, size, leaveTypeResponses))
+                        .data(leaveTypeResponses)
                         .build());
     }
 
@@ -88,14 +82,5 @@ public class LeaveTypeController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully soft deleted leaveType")
                         .build());
-    }
-
-    private static PagingResponse toPagingResponse(Integer page, Integer size, Page<LeaveTypeResponse> leaveTypeResponses) {
-        return PagingResponse.builder()
-                .currentPage(page)
-                .totalPages(leaveTypeResponses.getTotalPages())
-                .size(size)
-                .totalItems(leaveTypeResponses.getTotalElements())
-                .build();
     }
 }

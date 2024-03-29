@@ -12,10 +12,9 @@ import com.pratwib.leaveapplicationapi.service.EmployeeService;
 import com.pratwib.leaveapplicationapi.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,11 +47,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeResponse> getAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Employee> employees = employeeRepository.findAllByIsActive(true, pageable);
+    public List<EmployeeResponse> getAll(String departmentName) {
+        List<Employee> employees = employeeRepository.findAllByDepartment_NameOrIsActive(departmentName, true);
 
-        return employees.map(EmployeeServiceImpl::toEmployeeResponse);
+        return employees.stream().map(EmployeeServiceImpl::toEmployeeResponse).toList();
     }
 
     @Transactional(rollbackOn = Exception.class)

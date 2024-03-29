@@ -4,11 +4,9 @@ import com.pratwib.leaveapplicationapi.constant.AppPath;
 import com.pratwib.leaveapplicationapi.model.request.EmployeeRequest;
 import com.pratwib.leaveapplicationapi.model.response.CommonResponse;
 import com.pratwib.leaveapplicationapi.model.response.EmployeeResponse;
-import com.pratwib.leaveapplicationapi.model.response.PagingResponse;
 import com.pratwib.leaveapplicationapi.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,18 +36,16 @@ public class EmployeeController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<?> getAllEmployees(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
+    public ResponseEntity<?> getEmployees(
+            @RequestParam(required = false) String departmentName
     ) {
-        Page<EmployeeResponse> employeeResponses = employeeService.getAll(page, size);
+        List<EmployeeResponse> employeeResponses = employeeService.getAll(departmentName);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonResponse.<List<EmployeeResponse>>builder()
                         .statusCode(HttpStatus.OK.value())
-                        .message("Successfully retrieved all employees")
-                        .data(employeeResponses.getContent())
-                        .pagingResponse(toPagingResponse(page, size, employeeResponses))
+                        .message("Successfully retrieved employees")
+                        .data(employeeResponses)
                         .build());
     }
 
@@ -76,14 +72,5 @@ public class EmployeeController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully soft deleted employee")
                         .build());
-    }
-
-    private static PagingResponse toPagingResponse(Integer page, Integer size, Page<EmployeeResponse> employeeResponses) {
-        return PagingResponse.builder()
-                .currentPage(page)
-                .totalPages(employeeResponses.getTotalPages())
-                .size(size)
-                .totalItems(employeeResponses.getTotalElements())
-                .build();
     }
 }

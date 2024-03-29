@@ -1,6 +1,5 @@
 package com.pratwib.leaveapplicationapi.model.response;
 
-import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

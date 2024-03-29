@@ -14,9 +14,9 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public Role getOrCreate(Role role) {
+    public void getOrCreate(Role role) {
         Optional<Role> optionalRole = roleRepository.findByName(role.getName());
 
-        return optionalRole.orElseGet(() -> roleRepository.saveAndFlush(role));
+        optionalRole.orElseGet(() -> roleRepository.saveAndFlush(role));
     }
 }

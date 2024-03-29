@@ -3,7 +3,8 @@ package com.pratwib.leaveapplicationapi.service;
 import com.pratwib.leaveapplicationapi.model.entity.LeaveType;
 import com.pratwib.leaveapplicationapi.model.request.LeaveTypeRequest;
 import com.pratwib.leaveapplicationapi.model.response.LeaveTypeResponse;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface LeaveTypeService {
     LeaveTypeResponse create(LeaveTypeRequest leaveTypeRequest);
@@ -12,7 +13,7 @@ public interface LeaveTypeService {
 
     LeaveTypeResponse getById(String id);
 
-    Page<LeaveTypeResponse> getAll(Integer page, Integer size);
+    List<LeaveTypeResponse> getAll();
 
     LeaveTypeResponse updateById(String id, LeaveTypeRequest leaveTypeRequest);
 

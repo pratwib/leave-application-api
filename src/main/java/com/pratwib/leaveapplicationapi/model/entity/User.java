@@ -3,7 +3,6 @@ package com.pratwib.leaveapplicationapi.model.entity;
 import com.pratwib.leaveapplicationapi.constant.DbPath;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = DbPath.USER_SCHEMA)

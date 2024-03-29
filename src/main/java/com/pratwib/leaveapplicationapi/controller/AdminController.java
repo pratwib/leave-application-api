@@ -4,11 +4,9 @@ import com.pratwib.leaveapplicationapi.constant.AppPath;
 import com.pratwib.leaveapplicationapi.model.request.AdminRequest;
 import com.pratwib.leaveapplicationapi.model.response.AdminResponse;
 import com.pratwib.leaveapplicationapi.model.response.CommonResponse;
-import com.pratwib.leaveapplicationapi.model.response.PagingResponse;
 import com.pratwib.leaveapplicationapi.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,18 +34,14 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllAdmins(
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
-    ) {
-        Page<AdminResponse> adminResponses = adminService.getAll(page, size);
+    public ResponseEntity<?> getAllAdmins() {
+        List<AdminResponse> adminResponses = adminService.getAll();
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CommonResponse.<List<AdminResponse>>builder()
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully retrieved all admins")
-                        .data(adminResponses.getContent())
-                        .pagingResponse(toPagingResponse(page, size, adminResponses))
+                        .data(adminResponses)
                         .build());
     }
 
@@ -72,14 +66,5 @@ public class AdminController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Successfully soft deleted admin")
                         .build());
-    }
-
-    private static PagingResponse toPagingResponse(Integer page, Integer size, Page<AdminResponse> adminResponses) {
-        return PagingResponse.builder()
-                .currentPage(page)
-                .totalPages(adminResponses.getTotalPages())
-                .size(size)
-                .totalItems(adminResponses.getTotalElements())
-                .build();
     }
 }
