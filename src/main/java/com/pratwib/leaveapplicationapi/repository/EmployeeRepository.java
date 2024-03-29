@@ -18,15 +18,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     @Query(value = """
             SELECT * FROM m_employee e
-            JOIN r_user u ON e.user_id = u.id
-            WHERE u.id = :userId AND e.is_active = :isActive
+            WHERE e.user_id = :userId AND e.is_active = :isActive
             """, nativeQuery = true)
     Optional<Employee> findByUser_IdAndIsActive(String userId, Boolean isActive);
 
-    @Query(value = """
-            SELECT * FROM m_employee e
-            LEFT JOIN m_department d ON e.department_id = d.id
-            WHERE (d.name = :departmentName OR d.name IS NULL) AND e.is_active = :isActive
-            """, nativeQuery = true)
     List<Employee> findAllByDepartment_NameOrIsActive(String departmentName, Boolean isActive);
 }

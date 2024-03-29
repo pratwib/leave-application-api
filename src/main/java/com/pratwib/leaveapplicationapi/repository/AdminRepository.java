@@ -24,8 +24,7 @@ public interface AdminRepository extends JpaRepository<Admin, String> {
 
     @Query(value = """
             SELECT * FROM m_admin a
-            JOIN users u ON a.user_id = u.id
-            WHERE u.id = :userId AND a.is_active = :isActive
+            WHERE a.user_id = :userId AND a.is_active = :isActive
             """, nativeQuery = true)
     Optional<Admin> findByUser_IdAndIsActive(String userId, Boolean isActive);
 }
